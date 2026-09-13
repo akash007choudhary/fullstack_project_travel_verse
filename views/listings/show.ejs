@@ -1,23 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>lists details</h1>
-    <ul>
-        <li><%= user.title %></li>
-        <li><%= user.description %></li>
-        <li > &#8377 <%= user.price.toLocaleString("en-IN")%></li>
-        <li><%= user.location %></li>
-        <li><%= user.country %></li>
-    </ul>
-    <a href="/listings/<%= user._id %>/edit">Edit</a>
 
-    <form method="POST" action="/listings/<%= user._id %>?_method=DELETE" >
-        <button>delete</button>
-    </form>
-</body>
-</html>
+<% layout("/layouts/broilerplate") %>
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <h1 class="mb-4"><%= user.title %></h1>
+
+            <div class="card listing-details-card">
+
+                <img 
+                    src="<%= user.image.url %>" 
+                    class="card-img-top listing-details-image" 
+                    alt="listing_image"
+                >
+
+                <div class="card-body">
+
+                    <p class="card-text listing-description">
+                        <%= user.description %>
+                    </p>
+
+                    <h5 class="listing-price">
+                        &#8377; <%= user.price.toLocaleString("en-IN") %> / night
+                    </h5>
+
+                    <p class="card-text">
+                        <strong>Location:</strong> <%= user.location %>
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Country:</strong> <%= user.country %>
+                    </p>
+
+                    <div class="mt-4">
+
+                        <a 
+                            href="/listings/<%= user._id %>/edit" 
+                            class="btn btn-primary add-btn"
+                        >
+                            Edit
+                        </a>
+
+                        <form 
+                            method="POST" 
+                            action="/listings/<%= user._id %>?_method=DELETE"
+                            class="d-inline"
+                        >
+                            <button class="btn btn-dark">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

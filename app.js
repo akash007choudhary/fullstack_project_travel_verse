@@ -23,6 +23,13 @@ main()
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+
+
+// ejs mate 
+const ejsMate = require("ejs-mate");
+app.engine("ejs", ejsMate);
+
+
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

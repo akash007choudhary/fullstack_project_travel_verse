@@ -1,21 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wander_lust</title>
-</head>
-<body>
-    <form action="/listings/new" method="get">
-        <button type="submit">Add new listing</button>
-    </form>
-    <ul>
-        <% for( let list of all_listings) {%>
-            <li>
-                <a href="/listings/<%= list._id %>"><%= list.title %></a>
-            </li>
-        <% } %>
-    </ul>
-    
-</body>
-</html>
+
+<% layout("/layouts/broilerplate") %>
+
+<h1 class="listings-heading">All Listings</h1>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 listings-container">
+
+    <% for(let list of all_listings) { %>
+
+        <a href="/listings/<%= list._id %>" class="listing-link">
+                        
+              <div class="col">
+
+            <div class="card listing-card">
+
+                <img 
+                    src="<%= list.image.url %>" 
+                    class="card-img-top listing-image" 
+                    alt="listing_image"
+                >
+                <div class="card-img-overlay"></div>
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        <%= list.title %>
+                    </h5>
+
+                    <p class="card-text">
+                        <%= list.description %>
+                    </p>
+
+                    <p class="listing-price">
+                        ₹<%= list.price.toLocaleString("en-IN") %> / night
+                    </p>
+
+                </div>
+
+                
+
+            </div>
+
+        </div>      
+                    
+        </a>
+        
+
+    <% } %>
+
+</div>
+

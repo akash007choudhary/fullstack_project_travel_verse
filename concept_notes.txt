@@ -1,0 +1,4 @@
+EJS-Mate: EJS-Mate helps us create a common layout for all EJS pages. We write common things like HTML structure, navbar and footer in boilerplate.ejs. The <%- body %> acts as a placeholder where the content of the current EJS page is inserted. In each page, layout("/layouts/boilerplate") tells EJS-Mate to use that common layout.
+
+
+
