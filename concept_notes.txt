@@ -2,3 +2,17 @@ EJS-Mate: EJS-Mate helps us create a common layout for all EJS pages. We write c
 
 
 
+Express Router is a built-in feature of Express.js that allows us to organize routes into separate files, making the code more modular, manageable, and easy to maintain.
+
+Why use it? To avoid writing all routes in a single file and improve code organization.
+
+
+
+**HTTP Cookies:** 
+Cookies are small pieces of data stored in the user's browser by a website. They are used to remember login sessions, user preferences, and other information. The server sends cookies using the `Set-Cookie` header, and the browser sends them back to the server through the `Cookie` header in subsequent requests.
+
+**Cookie-Parser:** Cookie-parser is middleware in Express.js used to parse cookies sent by the browser and make them accessible through `req.cookies`. First, install it using `npm install cookie-parser`, then use `app.use(cookieParser())`. We can set cookies using `res.cookie()`, read them using `req.cookies`, and clear them using `res.clearCookie()`.
+
+**Signed Cookies:** Signed cookies are cookies that contain a digital signature to help detect whether their values have been modified by the user. In Express.js, we can create signed cookies using `res.cookie("name", "Akash", { signed: true })` after configuring `cookie-parser` with a secret key using `app.use(cookieParser("secret"))`. The signature helps verify the cookie's integrity, but it does not encrypt the cookie's contents.
+
+**Verifying Signed Cookies:** We can access signed cookies through `req.signedCookies`. For example, `req.signedCookies.name` returns the cookie value if its signature is valid. If the cookie has been modified or its signature is invalid, the value will be `false`. Signed cookies are useful for detecting cookie tampering and protecting the integrity of cookie values. However, they do not independently provide authentication or authorization.
