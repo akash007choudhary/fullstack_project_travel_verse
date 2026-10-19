@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const { type } = require("../schema");
+const Review = require("./review.js");
+
 const Schema = mongoose.Schema;
 
 const listingschema = new Schema({
@@ -30,8 +33,25 @@ image: {
     country: {
         type: String,
         required: true
+    },
+reviews: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: "Review"
+    }
+]
+});
+
+// Cascade delete: when a listing is deleted, delete all its associated reviews.
+// matlb jab listnn ka dlete call krega findone and delte ko to wo iss middle ware ko phel run krke review ko delte kr dega 
+listingschema.post("findOneAndDelete",async(listing)=>{
+   if (listing) {
+        await Review.deleteMany({
+            _id: { $in: listing.reviews }
+        });
     }
 });
+
 
 // listing is the file name inside mongoose
 const listing = mongoose.model("listing", listingschema);

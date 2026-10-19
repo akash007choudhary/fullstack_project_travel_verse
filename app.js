@@ -7,7 +7,8 @@ const app = express();
 const port = 3000;
 const asyncWrap=require("./utils/async");
 const ExpressError = require("./utils/ExpressError");
-const listingSchema = require("./schema");
+const {listingSchema, reviewSchema} = require("./schema");
+const Review= require("./models/review");
 
 // MongoDB Connection
 main()
@@ -28,6 +29,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // ejs mate
 const ejsMate = require("ejs-mate");
+const wrapAsync = require("./utils/async");
 app.engine("ejs", ejsMate);
 
 // Middleware
@@ -52,21 +54,18 @@ const validateListing = (req, res, next) => {
         next();
     }
 };
-// app.get("/testlisting", async(req,res)=>{
-//     let sample = new listing({
-//     title: "Cozy Beach House",
-//     description: "A comfortable house near the beach.",
-//     // image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2",
-//     price: 2500,
-//     location: "Goa",
-//     country: "India"
-//     });
 
-//     await sample.save();
-//     console.log("sample saved ");
-//     res.send("sucessful ");
+const validateReview = (req, res, next) => {
 
-// })
+    let result = reviewSchema.validate(req.body);
+
+    if (result.error) {
+        throw new ExpressError(400, result.error);
+    } else {
+        next();
+    }
+};
+
 // READ - Get all listings
 app.get("/listings", asyncWrap(async (req, res) => {
     const all_listings = await listing.find({});
@@ -93,7 +92,7 @@ app.post("/listings",validateListing, asyncWrap(async (req, res, next) => {
         throw new ExpressError(400, result.error);
     }
 
-    const newListing = new Listing(req.body.listing);
+    const newListing = new listing(req.body.listing);
 
     await newListing.save();
 
@@ -105,7 +104,7 @@ app.post("/listings",validateListing, asyncWrap(async (req, res, next) => {
 app.get("/listings/:id", asyncWrap(async (req, res) => {
     const { id } = req.params;
 
-    const user = await listing.findById(id);
+    const user = await listing.findById(id).populate("reviews");
 
     res.render("./listings/show.ejs", { user });
 }));
@@ -135,13 +134,40 @@ app.put("/listings/:id",validateListing, asyncWrap(async (req, res) => {
 }));
 
 
-// DELETE
+// DELETE yaahna se revieew aka deletion call hoga middle ware .findByIdAndDelete
 app.delete("/listings/:id", asyncWrap(async (req, res) => {
     const { id } = req.params;
 
     await listing.findByIdAndDelete(id);
 
     res.redirect("/listings");
+}));
+
+// reviews post route 
+app.post("/listings/:id/reviews", validateReview, wrapAsync (async(req, res) => {
+    let user = await listing.findById(req.params.id);
+
+    let newReview = new Review(req.body.review);
+
+    user.reviews.push(newReview);
+
+    await newReview.save();
+    await user.save();
+    // res.send("new review saved ");
+    res.redirect(`/listings/${user._id}`);
+})
+);
+// dlete a reviw  as use review as independendt to hatana ahu hai but also ffrom the listing array se to we use pull method in mongoose
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+
+    await listing.findByIdAndUpdate(id, {
+        $pull: { reviews: reviewId }
+    });
+
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
 }));
 
 // If the requested page/route does not exist
