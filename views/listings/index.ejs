@@ -1,6 +1,22 @@
 
 <% layout("/layouts/broilerplate") %>
 
+<% if (success && success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+
+<% if (error && error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+
 <h1 class="listings-heading">All Listings</h1>
 
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 listings-container">

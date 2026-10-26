@@ -6,7 +6,29 @@ const app = express();
 const port = 3000;
 const ExpressError = require("./utils/ExpressError");
 const {listingSchema, reviewSchema} = require("./schema");
+const session = require ("express-session");
+const flash = require("connect-flash");
 
+const sessionOptions = {
+  secret: "akashisgreate",
+  resave: false,
+  saveUninitialized: true,
+  cookie:{
+    expires: Date.now()+ 7*24*60*60*1000,
+    // itte miliseconds ke baad aaj se expire krega like github as 1 week tak data cookie ka stroe krke rkta hai 
+    maxaAge:7*24*60*60*1000,
+    httpOnly: true,
+  },
+};
+// flash const wale niche ke 2 routes se phle ayaega use usmain use krnge 
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
 const listings = require("./routes/listing.js");
 const reviews =require("./routes/review.js");
 
