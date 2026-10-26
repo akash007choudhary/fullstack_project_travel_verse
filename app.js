@@ -8,6 +8,9 @@ const ExpressError = require("./utils/ExpressError");
 const {listingSchema, reviewSchema} = require("./schema");
 const session = require ("express-session");
 const flash = require("connect-flash");
+const passport= require("passport");
+const localStrategy=require("passport-local");
+const User=require("./models/user.js");
 
 const sessionOptions = {
   secret: "akashisgreate",
@@ -15,7 +18,6 @@ const sessionOptions = {
   saveUninitialized: true,
   cookie:{
     expires: Date.now()+ 7*24*60*60*1000,
-    // itte miliseconds ke baad aaj se expire krega like github as 1 week tak data cookie ka stroe krke rkta hai 
     maxaAge:7*24*60*60*1000,
     httpOnly: true,
   },
@@ -23,6 +25,15 @@ const sessionOptions = {
 // flash const wale niche ke 2 routes se phle ayaega use usmain use krnge 
 app.use(session(sessionOptions));
 app.use(flash());
+
+// Passport uses sessions to remember an authenticated user across multiple requests, so the user doesn't need to log in again on every page.
+
+app.use(passport.initialize());
+app.use(passport.session());
+paasport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");

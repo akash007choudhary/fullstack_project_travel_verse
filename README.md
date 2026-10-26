@@ -13,3 +13,4 @@ A full-stack property listing platform where users can explore, list and manage 
 - EJS-Mate
 - JavaScript
 - HTML/CSS
+- passport **Passport.js is an authentication middleware for Node.js that helps verify users' identities and manage login sessions.**
