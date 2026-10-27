@@ -1,16 +1,17 @@
-const { required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const passportLocalMongoose= require("passport-local-mongoose");
 
-const userSchema= new Schema({
-    emial:{
+const passportLocalMongooseModule = require("passport-local-mongoose");
+const passportLocalMongoose =
+    passportLocalMongooseModule.default || passportLocalMongooseModule;
+
+const userSchema = new Schema({
+    email: {
         type: String,
-        required: true,
-    },
+        required: true
+    }
 });
 
-// auotmatically adds Passport authentication features to the User model, including username/password handling, password hashing, and user authentication methods.
-User.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose);
 
-module.exports=mongoose.model("User",userSchema);
+module.exports = mongoose.model("User", userSchema);

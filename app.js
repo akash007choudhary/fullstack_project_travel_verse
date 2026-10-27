@@ -11,7 +11,7 @@ const flash = require("connect-flash");
 const passport= require("passport");
 const localStrategy=require("passport-local");
 const User=require("./models/user.js");
-
+const users = require("./routes/user.js");
 const sessionOptions = {
   secret: "akashisgreate",
   resave: false,
@@ -30,9 +30,12 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-paasport.use(new LocalStrategy(User.authenticate()));
+
+passport.use(new localStrategy(User.authenticate()));
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 
 app.use((req, res, next) => {
@@ -78,12 +81,22 @@ app.get("/", (req, res) => {
   res.send("hello project ");
 });
 
+app.get("/demouser", async (req, res) => {
+    let fakeUser = new User({
+        email: "student2@gmail.com",
+        username: "deltas-student"
+    });
 
+    let registered = await User.register(fakeUser, " helloworld2");
+    console.log(registered);
+  });
+
+  
 // ye ise match krega /listings ke jo bhi honge unhe listing.js in routes main  yani /listing common jismain honge 
 app.use("/listings",listings);
 
 app.use("/listings/:id/reviews",reviews);
-
+app.use("/", users);
 
 // If the requested page/route does not exist
 app.all("/*splat", (req, res, next) => {
