@@ -16,3 +16,7 @@ Cookies are small pieces of data stored in the user's browser by a website. They
 **Signed Cookies:** Signed cookies are cookies that contain a digital signature to help detect whether their values have been modified by the user. In Express.js, we can create signed cookies using `res.cookie("name", "Akash", { signed: true })` after configuring `cookie-parser` with a secret key using `app.use(cookieParser("secret"))`. The signature helps verify the cookie's integrity, but it does not encrypt the cookie's contents.
 
 **Verifying Signed Cookies:** We can access signed cookies through `req.signedCookies`. For example, `req.signedCookies.name` returns the cookie value if its signature is valid. If the cookie has been modified or its signature is invalid, the value will be `false`. Signed cookies are useful for detecting cookie tampering and protecting the integrity of cookie values. However, they do not independently provide authentication or authorization.
+
+
+
+jause hi we logged in we msut e automatically signed up liek all websits

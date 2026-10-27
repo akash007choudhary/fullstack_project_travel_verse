@@ -32,6 +32,14 @@
                     <p class="card-text">
                         <strong>Country:</strong> <%= user.country %>
                     </p>
+                    
+                    <% if (user.owner) { %>
+                    <p class="card-text">
+                         <strong>Owner:</strong> <%= user.owner.username %>
+                    </p>
+                    <% } else { %>
+                        <p class="card-text">Owner not found.</p>
+                    <% } %>
 
                     <div class="mt-4">
                         <a

@@ -4,7 +4,7 @@ const asyncWrap=require("../utils/async");
 const ExpressError = require("../utils/ExpressError");
 const {listingSchema, reviewSchema} = require("../schema");
 const listing = require("../models/listing");
-
+const { isLoggedIn } = require("../middleware.js");
 
 const validateListing = (req, res, next) => {
 
@@ -27,14 +27,15 @@ router.get("/", asyncWrap(async (req, res) => {
 
 
 // NEW FORM TO CREATE NEW LISTING
-router.get("/new", (req, res) => {
+router.get("/new",isLoggedIn, (req, res) => {
+    
     res.render("./listings/new.ejs");
 });
 
 
 // CREATE NEW LISTING  with seerve side validation as one could send teh lsiting but without some fiekd like city , price etc the REQUIRED will handle that 
 // for eror msegae well do JOI Package of npm
-router.post("/",validateListing, asyncWrap(async (req, res, next) => {
+router.post("/", isLoggedIn,validateListing, asyncWrap(async (req, res, next) => {
 
     let result = listingSchema.validate(req.body);
 
@@ -46,6 +47,8 @@ router.post("/",validateListing, asyncWrap(async (req, res, next) => {
 
     const newListing = new listing(req.body.listing);
 
+    newListing.owner=req.user._id;
+
     await newListing.save();
     req.flash("success","new listing created ");
     res.redirect("/listings");
@@ -56,7 +59,7 @@ router.post("/",validateListing, asyncWrap(async (req, res, next) => {
 router.get("/:id", asyncWrap(async (req, res) => {
     const { id } = req.params;
 
-    const user = await listing.findById(id).populate("reviews");
+    const user = await listing.findById(id).populate("reviews").populate("owner");
     if(!user){
          req.flash("error"," listing does not exist ! ");
          return res.redirect("/listings");
@@ -66,7 +69,7 @@ router.get("/:id", asyncWrap(async (req, res) => {
 
 
 // UPDATE - Show edit form
-router.get("/:id/edit", asyncWrap(async (req, res) => {
+router.get("/:id/edit" , isLoggedIn, asyncWrap(async (req, res) => {
     const { id } = req.params;
 
     const user = await listing.findById(id);
@@ -77,7 +80,7 @@ router.get("/:id/edit", asyncWrap(async (req, res) => {
 
 
 // UPDATE - Actually update listing
-router.put("/:id",validateListing, asyncWrap(async (req, res) => {
+router.put("/:id", isLoggedIn,validateListing, asyncWrap(async (req, res) => {
    
   const { id } = req.params;
 
@@ -95,7 +98,7 @@ if(!updatedListing){
 
 
 // DELETE yaahna se revieew aka deletion call hoga middle ware .findByIdAndDelete
-router.delete("/:id", asyncWrap(async (req, res) => {
+router.delete("/:id", isLoggedIn, asyncWrap(async (req, res) => {
     const { id } = req.params;
 
     await listing.findByIdAndDelete(id);

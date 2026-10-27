@@ -39,7 +39,11 @@ reviews: [
         type: Schema.Types.ObjectId,
         ref: "Review"
     }
-]
+],
+owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+}
 });
 
 // Cascade delete: when a listing is deleted, delete all its associated reviews.
