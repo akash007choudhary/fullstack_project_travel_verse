@@ -160,3 +160,71 @@ footer {
     margin-right: 0.5rem;
 }
 
+
+/* Guest Reviews */
+.review-card {
+    border: none !important;
+    border-radius: 16px !important;
+    background-color: #fff;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.review-card .card-body {
+    padding: 1.25rem !important;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.review-username {
+    font-size: 1rem;
+    color: #222;
+    overflow-wrap: anywhere;
+}
+
+.review-header .starability-result {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.review-date {
+    color: #777;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+.review-comment {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    margin-bottom: 16px;
+}
+
+.review-card .btn-outline-danger {
+    border-radius: 8px;
+    padding: 5px 14px;
+}
+
+/* Responsive on mobile */
+@media (max-width: 576px) {
+    .review-card .card-body {
+        padding: 1rem !important;
+    }
+
+    .review-header {
+        justify-content: flex-start;
+    }
+}

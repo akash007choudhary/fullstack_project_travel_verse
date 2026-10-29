@@ -19,4 +19,10 @@ Cookies are small pieces of data stored in the user's browser by a website. They
 
 
 
-jause hi we logged in we msut e automatically signed up liek all websits
+jause hi we logged in we msut e automatically signed up liek all websits\\\
+
+
+impleneted accrdng to MVC framework 
+
+
+also router.route methd eays and compact 
