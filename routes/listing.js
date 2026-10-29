@@ -4,8 +4,8 @@ const asyncWrap=require("../utils/async");
 const ExpressError = require("../utils/ExpressError");
 const {listingSchema, reviewSchema} = require("../schema");
 const listing = require("../models/listing");
-const { isLoggedIn } = require("../middleware.js");
-
+// const { isLoggedIn } = require("../middleware.js");
+const { isLoggedIn, isOwner } = require("../middleware.js");
 const validateListing = (req, res, next) => {
 
     let result = listingSchema.validate(req.body);
@@ -64,12 +64,15 @@ router.get("/:id", asyncWrap(async (req, res) => {
          req.flash("error"," listing does not exist ! ");
          return res.redirect("/listings");
     }
+    await listing.populate(user, {
+        path: "reviews.owner"
+    });
     res.render("./listings/show.ejs", { user });
 }));
 
 
 // UPDATE - Show edit form
-router.get("/:id/edit" , isLoggedIn, asyncWrap(async (req, res) => {
+router.get("/:id/edit" , isLoggedIn, isOwner, asyncWrap(async (req, res) => {
     const { id } = req.params;
 
     const user = await listing.findById(id);
@@ -80,7 +83,7 @@ router.get("/:id/edit" , isLoggedIn, asyncWrap(async (req, res) => {
 
 
 // UPDATE - Actually update listing
-router.put("/:id", isLoggedIn,validateListing, asyncWrap(async (req, res) => {
+router.put("/:id", isLoggedIn,isOwner,validateListing, asyncWrap(async (req, res) => {
    
   const { id } = req.params;
 
@@ -98,7 +101,7 @@ if(!updatedListing){
 
 
 // DELETE yaahna se revieew aka deletion call hoga middle ware .findByIdAndDelete
-router.delete("/:id", isLoggedIn, asyncWrap(async (req, res) => {
+router.delete("/:id", isLoggedIn, isOwner,asyncWrap(async (req, res) => {
     const { id } = req.params;
 
     await listing.findByIdAndDelete(id);

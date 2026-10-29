@@ -5,7 +5,7 @@ const ExpressError = require("../utils/ExpressError");
 const {listingSchema, reviewSchema} = require("../schema");
 const listing = require("../models/listing");
 const Review = require("../models/review");
-
+const { isLoggedIn, isReviewOwner } = require("../middleware");
 
 
 const validateReview = (req, res, next) => {
@@ -20,11 +20,11 @@ const validateReview = (req, res, next) => {
 };
 
 // reviews post route 
-router.post("/", validateReview, asyncWrap (async(req, res) => {
+router.post("/",  isLoggedIn ,validateReview,asyncWrap (async(req, res) => {
     let user = await listing.findById(req.params.id);
 
     let newReview = new Review(req.body.review);
-
+    newReview.owner = req.user._id;
     user.reviews.push(newReview);
 
     await newReview.save();
@@ -35,7 +35,7 @@ router.post("/", validateReview, asyncWrap (async(req, res) => {
 })
 );
 // dlete a reviw  as use review as independendt to hatana ahu hai but also ffrom the listing array se to we use pull method in mongoose
-router.delete("/listings/:id/reviews/:reviewId", asyncWrap(async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewOwner, asyncWrap(async (req, res) => {
     let { id, reviewId } = req.params;
 
     await listing.findByIdAndUpdate(id, {
@@ -43,8 +43,8 @@ router.delete("/listings/:id/reviews/:reviewId", asyncWrap(async (req, res) => {
     });
 
     await Review.findByIdAndDelete(reviewId);
- req.flash("success","review dleeted ");
+
+    req.flash("success", "Review deleted!");
     res.redirect(`/listings/${id}`);
 }));
-
 module.exports=router;
