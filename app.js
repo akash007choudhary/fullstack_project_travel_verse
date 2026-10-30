@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const ExpressError = require("./utils/ExpressError");
 const {listingSchema, reviewSchema} = require("./schema");
 const session = require ("express-session");
@@ -116,7 +116,10 @@ app.use("/listings",listings);
 
 app.use("/listings/:id/reviews",reviews);
 app.use("/", users);
-
+// Home page
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 // If the requested page/route does not exist
 app.all("/*splat", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
