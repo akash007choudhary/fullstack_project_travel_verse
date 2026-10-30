@@ -6,6 +6,18 @@ const listingSchema = Joi.object({
         description: Joi.string().required(),
         price: Joi.number().min(0).required(),
         country: Joi.string().required(),
+        category: Joi.string().valid(
+            "Trending",
+            "Mountains",
+            "Beachfront",
+            "Cabins",
+            "Lakefront",
+            "Camping",
+            "City Stays",
+            "Arctic",
+            "Amazing Pools",
+            "Nature"
+        ).required(),
         location: Joi.string().required(),
         image: Joi.object({
             filename: Joi.string().allow(""),

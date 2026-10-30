@@ -47,6 +47,34 @@
             </div>
         </div>
 
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+
+            <select
+                name="listing[category]"
+                id="category"
+                class="form-select"
+                required
+            >
+                <option value="Trending" <%= user.category === "Trending" ? "selected" : "" %>>Trending</option>
+                <option value="Mountains" <%= user.category === "Mountains" ? "selected" : "" %>>Mountains</option>
+                <option value="Beachfront" <%= user.category === "Beachfront" ? "selected" : "" %>>Beachfront</option>
+                <option value="Cabins" <%= user.category === "Cabins" ? "selected" : "" %>>Cabins</option>
+                <option value="Lakefront" <%= user.category === "Lakefront" ? "selected" : "" %>>Lakefront</option>
+                <option value="Camping" <%= user.category === "Camping" ? "selected" : "" %>>Camping</option>
+                <option value="City Stays" <%= user.category === "City Stays" ? "selected" : "" %>>City Stays</option>
+                <option value="Arctic" <%= user.category === "Arctic" ? "selected" : "" %>>Arctic</option>
+                <option value="Amazing Pools" <%= user.category === "Amazing Pools" ? "selected" : "" %>>Amazing Pools</option>
+                <option value="Nature" <%= user.category === "Nature" ? "selected" : "" %>>Nature</option>
+            </select>
+
+            <div class="invalid-feedback">
+                Please select a category.
+            </div>
+        </div>
+
+
+
 
         <div class="mb-3">
             <label for="image" class="form-label">Upload New Image</label>

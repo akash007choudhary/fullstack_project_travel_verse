@@ -11,12 +11,27 @@ const port = 3000;
 const ExpressError = require("./utils/ExpressError");
 const {listingSchema, reviewSchema} = require("./schema");
 const session = require ("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport= require("passport");
 const localStrategy=require("passport-local");
 const User=require("./models/user.js");
 const users = require("./routes/user.js");
+const store = MongoStore.create({
+    mongoUrl: process.env.ATLASDB_URL,
+    crypto: {
+        secret: process.env.SECRET,
+    },
+    touchAfter: 24 * 3600,
+    collectionName: "sessions"
+});
+
+store.on("error",()=>{
+  console.log("error in mongo session store", err);
+})
+
 const sessionOptions = {
+  store,
   secret: "akashisgreate",
   resave: false,
   saveUninitialized: true,
@@ -51,6 +66,7 @@ app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    res.locals.MAP_TOKEN = process.env.MAP_TOKEN;
     next();
 });
 const listings = require("./routes/listing.js");
@@ -58,16 +74,9 @@ const reviews =require("./routes/review.js");
 
 
 // MongoDB Connection
-main()
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wander_lust");
+    await mongoose.connect(process.env.ATLASDB_URL);
+    console.log("MongoDB Atlas connected");
 }
 
 // EJS
@@ -86,10 +95,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 
 // Routes
-app.get("/", (req, res) => {
-  //   res.render("index");
-  res.send("hello project ");
-});
+// app.get("/", (req, res) => {
+//    res.render("index");
+//   res.send("hello project ");
+// });
 
 app.get("/demouser", async (req, res) => {
     let fakeUser = new User({
@@ -120,6 +129,13 @@ app.use((err, req, res, next) => {
 });
 
 // Server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// Server
+main()
+    .then(() => {
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
+        });
+    })
+    .catch((err) => {
+        console.log("MongoDB connection failed:", err);
+    });

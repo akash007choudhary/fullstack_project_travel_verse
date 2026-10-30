@@ -228,3 +228,425 @@ footer {
         justify-content: flex-start;
     }
 }
+
+
+
+/* Category Bar */
+.category-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem 1rem;
+    margin: 0 auto 1.5rem;
+    max-width: 1400px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.category-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 85px;
+    position: relative;
+    cursor: pointer;
+    color: #717171;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.category i {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+}
+
+.category p {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.category span {
+    font-size: 0.65rem;
+    color: #fe424d;
+    font-weight: 600;
+    margin-top: 0.3rem;
+    white-space: nowrap;
+}
+
+.category:hover {
+    color: #222222;
+}
+
+.category:hover::after {
+    content: "";
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #222222;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .category-bar {
+        justify-content: flex-start;
+        gap: 1.8rem;
+        padding: 1rem;
+    }
+
+    .category {
+        min-width: 75px;
+    }
+}
+
+
+
+
+/* =========================
+   TRAVEL VERSE HERO SECTION
+========================= */
+
+.travel-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 340px;
+    padding: 3rem 4rem;
+    margin: 1.5rem 0 2rem;
+    overflow: hidden;
+    border: 1px solid #f3e4e3;
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(254, 66, 77, 0.12), transparent 28%),
+        linear-gradient(120deg, #fffaf8 0%, #ffffff 55%, #fff1ef 100%);
+}
+
+/* Hero Content */
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f4d5d3;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #fe424d;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.hero-badge i {
+    font-size: 1rem;
+}
+
+.travel-hero h1 {
+    margin: 0;
+    color: #222222;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -2px;
+}
+
+.hero-highlight {
+    display: block;
+    color: #fe424d;
+}
+
+.hero-description {
+    max-width: 490px;
+    margin-top: 1.3rem;
+    color: #777777;
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+.hero-bottom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.hero-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: #666666;
+    font-size: 0.85rem;
+}
+
+.hero-brand strong {
+    color: #222222;
+}
+
+.brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #fe424d;
+    color: white;
+    font-size: 1rem;
+}
+
+.hero-decoration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hero-decoration span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fe424d;
+    opacity: 0.35;
+}
+
+.hero-decoration span:first-child {
+    width: 24px;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+/* Decorative Compass */
+
+.hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 290px;
+    width: 290px;
+    height: 270px;
+}
+
+.hero-compass {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 175px;
+    height: 175px;
+    border: 1px solid rgba(254, 66, 77, 0.2);
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffffff, #fff0ed);
+    box-shadow:
+        0 20px 60px rgba(254, 66, 77, 0.12),
+        inset 0 0 25px rgba(254, 66, 77, 0.05);
+    color: #fe424d;
+}
+
+.hero-compass i {
+    font-size: 7rem;
+    animation: compass-float 4s ease-in-out infinite;
+}
+
+.hero-orbit {
+    position: absolute;
+    border: 1px solid rgba(254, 66, 77, 0.18);
+    border-radius: 50%;
+}
+
+.orbit-one {
+    width: 230px;
+    height: 230px;
+}
+
+.orbit-two {
+    width: 285px;
+    height: 285px;
+    border-style: dashed;
+    opacity: 0.7;
+}
+
+.floating-card {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #f5eeee;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(40, 20, 20, 0.08);
+    color: #333333;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.floating-card i {
+    color: #fe424d;
+    font-size: 1rem;
+}
+
+.floating-card-top {
+    top: 18px;
+    right: -5px;
+}
+
+.floating-card-bottom {
+    bottom: 15px;
+    left: -25px;
+}
+
+@keyframes compass-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Responsive Design */
+
+@media (max-width: 900px) {
+    .travel-hero {
+        padding: 2.5rem;
+    }
+
+    .hero-visual {
+        flex-basis: 220px;
+        transform: scale(0.85);
+    }
+}
+
+@media (max-width: 650px) {
+    .travel-hero {
+        min-height: auto;
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+    .travel-hero h1 {
+        font-size: 2.7rem;
+        letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .hero-badge {
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+    }
+
+    .hero-bottom {
+        margin-top: 1.5rem;
+    }
+}
+
+/* Navbar must be the positioning reference */
+.navbar {
+    position: relative;
+}
+
+/* Search Bar - Exact Center */
+.search-form {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    width: 320px;
+    height: 46px;
+
+    border: 1px solid #dddddd;
+    border-radius: 30px;
+    padding: 4px 5px 4px 18px;
+    background-color: white;
+
+    transition: box-shadow 0.2s ease;
+}
+
+.search-form:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+    color: #717171;
+}
+
+.search-btn {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #fe424d;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #e8313d;
+}
+
+/* Mobile layout */
+@media (max-width: 767px) {
+    .search-form {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin: 12px 0;
+    }
+}
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}

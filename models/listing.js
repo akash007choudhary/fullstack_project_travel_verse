@@ -43,6 +43,31 @@ reviews: [
 owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
+},
+category: {
+    type: String,
+    enum: [
+        "Trending",
+        "Mountains",
+        "Beachfront",
+        "Cabins",
+        "Lakefront",
+        "Camping",
+        "City Stays",
+        "Arctic",
+        "Amazing Pools",
+        "Nature"
+    ],
+    default: "Trending"
+},
+geometry: {
+    type: {
+        type: String,
+        enum: ["Point"],
+    },
+    coordinates: {
+        type: [Number],
+    }
 }
 });
 
