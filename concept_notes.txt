@@ -26,3 +26,204 @@ impleneted accrdng to MVC framework
 
 
 also router.route methd eays and compact 
+Create Listing Form
+       |
+       v
+Location + Country
+       |
+       v
+Mapbox Geocoding API
+       |
+       v
+Longitude + Latitude
+       |
+       v
+MongoDB (Atlas / Local)
+       |
+       v
+Show Listing Map
+       |
+       v
+Mapbox GL JS + Marker
+
+geojason format 
+
+
+
+
+
+
+
+
+# Connect-Mongo – Session Management
+
+## 1. What is a Session?
+
+A session is used to remember a user across multiple requests.
+
+For example, when a user logs into our Travel Verse website:
+
+1. User enters username and password.
+2. Passport authenticates the user.
+3. Express creates a session.
+4. Browser receives a session ID through a cookie.
+5. On subsequent requests, the browser sends this session ID.
+6. The server uses it to identify the logged-in user.
+
+This means users do not need to log in again on every page.
+
+---
+
+## 2. Why Do We Need connect-mongo?
+
+By default, Express Session uses **MemoryStore** to store session information in the server's RAM.
+
+### Problems with MemoryStore
+
+* Sessions are lost when the server restarts.
+* Users may need to log in again.
+* It is not suitable for production applications.
+
+To solve this problem, we use **connect-mongo**.
+
+Connect-mongo stores session information in MongoDB instead of temporary server memory.
+
+---
+
+## 3. Installation
+
+```bash
+npm install connect-mongo
+```
+
+## 4. Import MongoStore
+
+```js
+const MongoStore = require("connect-mongo").default;
+```
+
+## 5. Create MongoDB Session Store
+
+```js
+const store = MongoStore.create({
+    mongoUrl: process.env.ATLASDB_URL,
+    crypto: {
+        secret: "mysuperscretcode"
+    },
+    touchAfter: 24 * 3600
+});
+```
+
+### Explanation of Properties
+
+| Property        | Purpose                                                            |
+| --------------- | ------------------------------------------------------------------ |
+| `mongoUrl`      | Connects the session store to MongoDB Atlas.                       |
+| `crypto.secret` | Encrypts session data stored in MongoDB.                           |
+| `touchAfter`    | Avoids unnecessary database updates within the specified interval. |
+
+**Note:** `touchAfter: 24 * 3600` means 24 hours. It does not mean the session expires after 24 hours.
+
+---
+
+## 6. Configure Express Session
+
+```js
+const sessionOptions = {
+    store: store,
+    secret: "akashisgreate",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+    }
+};
+
+app.use(session(sessionOptions));
+```
+
+Now Express Session uses MongoDB Atlas to store session information.
+
+For production, keep both secrets in environment variables rather than hardcoding them.
+
+---
+
+## 7. How Does It Work?
+
+```text
+             USER LOGIN
+                 |
+                 v
+       Passport Authentication
+                 |
+                 v
+          Express Session
+                 |
+                 v
+           connect-mongo
+                 |
+                 v
+           MongoDB Atlas
+                 |
+                 v
+         sessions collection
+```
+
+### Working Flow
+
+1. User logs into the website.
+2. Passport authenticates the user.
+3. Express Session creates a session.
+4. Connect-mongo stores the session in MongoDB Atlas.
+5. Browser stores the session ID in a cookie.
+6. On future requests, the browser sends the session ID.
+7. Express Session retrieves the corresponding session from MongoDB.
+
+---
+
+## 8. Difference Between Express Session, Connect-Mongo and Passport
+
+| Technology      | Responsibility                     |
+| --------------- | ---------------------------------- |
+| Express Session | Creates and manages user sessions. |
+| Connect-Mongo   | Stores sessions in MongoDB.        |
+| Passport        | Handles user authentication.       |
+
+---
+
+## 9. Placement Interview Questions
+
+### Q1. Why did you use connect-mongo in your project?
+
+**Answer:**
+
+I used connect-mongo as a session store to persist user sessions in MongoDB Atlas instead of using Express Session's default MemoryStore. This allows session data to survive server restarts and provides persistent session management for authenticated users.
+
+### Q2. What is the problem with MemoryStore?
+
+MemoryStore stores session data in server memory. When the server restarts, the stored sessions are lost. It is also not suitable for production applications.
+
+### Q3. What is touchAfter?
+
+`touchAfter` is used to reduce unnecessary database updates. It specifies the minimum interval between session touch operations.
+
+### Q4. Does connect-mongo handle authentication?
+
+No. Passport handles authentication, Express Session manages sessions, and connect-mongo stores session information in MongoDB.
+
+---
+
+## 10. Quick Revision
+
+* **express-session:** Creates and manages sessions.
+* **connect-mongo:** Stores sessions in MongoDB.
+* **Passport:** Authenticates users.
+* **Cookie:** Stores the session ID in the browser.
+* **MemoryStore:** Stores sessions temporarily in server memory.
+* **MongoStore:** Stores sessions persistently in MongoDB.
+
+### One-Line Summary
+
+Connect-mongo connects Express Session with MongoDB so that user sessions are stored in the database rather than temporary server memory.
